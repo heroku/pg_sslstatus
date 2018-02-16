@@ -12,7 +12,7 @@ before_install:
   - sudo rm -rf /var/lib/postgresql
   - sudo apt-get -y install wget software-properties-common
   - sudo add-apt-repository -y "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-  - sudo apt-get update && sudo apt-get -y install postgresql-server-dev-all devscripts rsync build-essential dh-make libkrb5-dev libssl-dev
+  - sudo apt-get update && sudo apt-get -y install postgresql-server-dev-9.3 postgresql-server-dev-9.4 devscripts rsync build-essential dh-make libkrb5-dev libssl-dev
   - echo '9.3\n9.4' > ~/.pg_supported_versions
 before_script:
   - make clean
@@ -20,6 +20,7 @@ script:
   - sed -i "s:trusty:${DIST}:g" debian/changelog
   - make
 before_deploy:
+  - sudo apt-get -y install postgresql-server-dev-all
   - make deb
 deploy:
   provider: packagecloud
